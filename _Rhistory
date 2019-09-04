@@ -1,0 +1,373 @@
+install.packages("bnlearn")
+source("http://bioconductor.org/biocLite.R")
+biocLite(c("graph", "Rgraphviz"))
+biocLite(c( "RBGL"))
+install.packages("gRain")
+data (alarm)
+library(bnlearn)
+#comparaison des resultats de deux algorithmes
+data (alarm)
+# load the data.
+data(alarm)
+# create and plot the network structure.
+modelstring = paste0("[HIST|LVF][CVP|LVV][PCWP|LVV][HYP][LVV|HYP:LVF][LVF]",
+"[STKV|HYP:LVF][ERLO][HRBP|ERLO:HR][HREK|ERCA:HR][ERCA][HRSA|ERCA:HR][ANES]",
+"[APL][TPR|APL][ECO2|ACO2:VLNG][KINK][MINV|INT:VLNG][FIO2][PVS|FIO2:VALV]",
+"[SAO2|PVS:SHNT][PAP|PMB][PMB][SHNT|INT:PMB][INT][PRSS|INT:KINK:VTUB][DISC]",
+"[MVS][VMCH|MVS][VTUB|DISC:VMCH][VLNG|INT:KINK:VTUB][VALV|INT:VLNG]",
+"[ACO2|VALV][CCHL|ACO2:ANES:SAO2:TPR][HR|CCHL][CO|HR:STKV][BP|CO:TPR]")
+dag = model2network(modelstring)
+graphviz.plot(dag)
+data("learning.test")
+a=data("learning.test")
+a
+View(alarm)
+res = hc(alarm)
+plot(res)
+res = hc(alarm)
+graphviz.plo(res)
+res = hc(alarm)
+graphviz.plot(res)
+res = hc(alarm,debug = TRUE)
+graphviz.plot(res)
+rbn(res,20000,alarm)
+plot(rbn(res,20000,alarm))
+data_set=rbn(res,20000,alarm)
+View(data_set)
+data_set=rbn(dag,100000,alarm)
+mmhc(training_set)
+training_set=rbn(dag,100000,alarm)
+#compare performances of several learning algorithms
+mmhc(training_set)
+graphviz.plot(dag_mmhc)
+h2pc(training_set)
+dag_mmhc=mmhc(training_set)
+graphviz.plot(dag_mmhc)
+h2pc(training_set)
+training_set=rbn(dag,100000,alarm)
+#potentially, impute the missing rows
+training_set_without_missingvalue = impute(dag, training_set)
+dag
+training_set
+names(training_set)
+donnnes_ajustees=bn.fit(alarm,dag)
+donnnes_ajustees=bn.fit(dag,alarm)
+donnnes_ajustees
+donnnes_ajustees$ACO2
+training_set_without_missingvalue = impute(donnnes_ajustees, training_set)
+training_set_without_missingvalue = impute(donnnes_ajustees, training_set)
+training_set_without_missingvalue = impute(object=donnnes_ajustees, data=training_set)
+donnnes_ajustees=bn.fit(dag,alarm,method="bayes")
+donnnes_ajustees$ACO2
+training_set=rbn(dag,2000,alarm)
+View(training_set)
+dag_mmhc=mmhc(training_set)
+na.omit(training_set)
+dim(na.omit(training_set))
+dag_mmhc=mmhc(na.omit(training_set))
+graphviz.plot(dag_mmhc)
+dag_h2pc=h2pc(na.omit(training_set))
+graphviz.plot(dag_h2pc)
+training_set_without_missingvalue = impute(object=donnnes_ajustees, data=training_set)
+training_set=rbn(dag,10000,alarm)
+#potentially, impute the missing rows
+training_set_without_missingvalue = impute(object=donnnes_ajustees, data=training_set)
+training_set=rbn(dag,100000,alarm)
+#potentially, impute the missing rows
+training_set_without_missingvalue = impute(object=donnnes_ajustees, data=training_set)
+dag_mmhc=mmhc(training_set_without_missingvalue)
+graphviz.plot(dag_mmhc)
+dag_h2pc=rsmax2(na.omit(training_set))
+graphviz.plot(dag_h2pc)
+dag_h2pc=rsmax2(na.omit(training_set),restrict="hpc", maximize="hc")
+graphviz.plot(dag_h2pc)
+dag_h2pc=rsmax2(na.omit(training_set),restrict="hpc", maximize="hc")
+graphviz.plot(dag_h2pc)
+?bnlearn-package
+dag_reference = model2network(modelstring)
+graphviz.plot(dag_reference)
+#on determine les probabilites du dag en fonction du jeu de donnees
+donnnes_ajustees=bn.fit(dag_reference,alarm,method="bayes")
+#from the true structure, create a dataset of 100 000 lines, and save it
+training_set=rbn(dag_reference,100000,alarm)
+#potentially, impute the missing rows
+training_set_without_missingvalue = impute(object=donnnes_ajustees, data=training_set)
+compare(dag_reference,dag_mmhc)
+shd(dag_reference,dag_mmhc)
+dag_rsmax2=rsmax2(na.omit(training_set),restrict="hpc", maximize="hc")
+graphviz.plot(dag_rsmax2)
+shd(dag_reference,dag_rsmax2)
+dag_rsmax2=rsmax2(na.omit(training_set))
+graphviz.plot(dag_rsmax2)
+shd(dag_reference,dag_rsmax2)
+par(mfrow = c(2, 2))
+graphviz.compare(dag_reference,dag_rsmax2)
+par(mfrow = c(2, 2))
+graphviz.compare(dag_reference,dag_rsmax2)
+par(mfrow = c(1, 2))
+graphviz.compare(dag_reference,dag_rsmax2)
+install.packages("http://www.bnlearn.com/releases/bnlearn_latest.tar.gz")
+score_perso <- function(dag_reference,dag_mmhc) {
+return (compare(dag_reference,dag_mmhc))
+}
+score_perso(dag_reference,dag_mmhc)
+2^3
+score_perso <- function(dag_reference,dag_mmhc,nb_variables) {
+scores_results=list("count"=list("tp"=0,"fp"=0,"tn"=0,"fn"=0),"recall"=0,"precision"=0,"fscore"=0,"dist2opt"=0)
+resultats_comparaison=compare(dag_reference,dag_mmhc)
+scores_results["count"]["tp"]=resultats_comparaison["tp"]
+scores_results["count"]["fp"]=resultats_comparaison["fp"]
+scores_results["count"]["fn"]=resultats_comparaison["fn"]
+scores_results["count"]["tn"]=(nb_variables*(nb_variables-1))-(resultats_comparaison["tp"]+resultats_comparaison["fp"]+resultats_comparaison["fn"])
+scores_results["recall"]=scores_results["count"]["tp"]/(scores_results["count"]["tp"]*scores_results["count"]["fn"])
+scores_results["precision"]=scores_results["count"]["tp"]/(scores_results["count"]["tp"]*scores_results["count"]["fp"])
+scores_results["fscore"]=(2*scores_results["recall"]*scores_results["precision"])/(scores_results["recall"]+scores_results["precision"])
+scores_results["dist2opt"]=sqrt((1-scores_results["precision"])^2+ (1-scores_results["precision"])^2)
+return (scores_results)
+}
+score_perso(dag_reference,dag_mmhc,nb_variables)
+nb_variables=dim(training_set_without_missingvalue)[2]
+score_perso(dag_reference,dag_mmhc,nb_variables)
+score_perso <- function(dag_reference,dag_mmhc,nb_variables) {
+scores_results=list("count"=list("tp"=0,"fp"=0,"tn"=0,"fn"=0),"recall"=0,"precision"=0,"fscore"=0,"dist2opt"=0)
+resultats_comparaison=compare(dag_reference,dag_mmhc)
+scores_results["count"]["tp"]=resultats_comparaison$tp
+scores_results["count"]["fp"]=resultats_comparaison$fp
+scores_results["count"]["fn"]=resultats_comparaison$fn
+scores_results["count"]["tn"]=(nb_variables*(nb_variables-1))-(resultats_comparaison$tp+resultats_comparaison$fp+resultats_comparaison$fn)
+scores_results["recall"]=scores_results["count"]["tp"]/(scores_results["count"]["tp"]*scores_results["count"]["fn"])
+scores_results["precision"]=scores_results["count"]["tp"]/(scores_results["count"]["tp"]*scores_results["count"]["fp"])
+scores_results["fscore"]=(2*scores_results["recall"]*scores_results["precision"])/(scores_results["recall"]+scores_results["precision"])
+scores_results["dist2opt"]=sqrt((1-scores_results["precision"])^2+ (1-scores_results["precision"])^2)
+return (scores_results)
+}
+score_perso <- function(dag_reference,dag_mmhc,nb_variables) {
+scores_results=list("count"=list("tp"=0,"fp"=0,"tn"=0,"fn"=0),"recall"=0,"precision"=0,"fscore"=0,"dist2opt"=0)
+resultats_comparaison=compare(dag_reference,dag_mmhc)
+print(resultats_comparaison)
+scores_results["count"]["tp"]=resultats_comparaison$tp
+scores_results["count"]["fp"]=resultats_comparaison$fp
+scores_results["count"]["fn"]=resultats_comparaison$fn
+scores_results["count"]["tn"]=(nb_variables*(nb_variables-1))-(resultats_comparaison$tp+resultats_comparaison$fp+resultats_comparaison$fn)
+scores_results["recall"]=scores_results["count"]["tp"]/(scores_results["count"]["tp"]*scores_results["count"]["fn"])
+scores_results["precision"]=scores_results["count"]["tp"]/(scores_results["count"]["tp"]*scores_results["count"]["fp"])
+scores_results["fscore"]=(2*scores_results["recall"]*scores_results["precision"])/(scores_results["recall"]+scores_results["precision"])
+scores_results["dist2opt"]=sqrt((1-scores_results["precision"])^2+ (1-scores_results["precision"])^2)
+return (scores_results)
+}
+score_perso(dag_reference,dag_mmhc,nb_variables)
+score_perso <- function(dag_reference,dag_mmhc,nb_variables) {
+scores_results=list("count"=list("tp"=0,"fp"=0,"tn"=0,"fn"=0),"recall"=0,"precision"=0,"fscore"=0,"dist2opt"=0)
+resultats_comparaison=compare(dag_reference,dag_mmhc)
+print(resultats_comparaison)
+scores_results["count"]["tp"]=resultats_comparaison$tp
+scores_results["count"]["fp"]=resultats_comparaison$fp
+scores_results["count"]["fn"]=resultats_comparaison$fn
+print(scores_results)
+print("nombr evariables est ")
+print(scores_results["count"]["fp"])
+scores_results["count"]["tn"]=(nb_variables*(nb_variables-1))-(resultats_comparaison$tp+resultats_comparaison$fp+resultats_comparaison$fn)
+scores_results["recall"]=scores_results["count"]["tp"]/(scores_results["count"]["tp"]*scores_results["count"]["fn"])
+scores_results["precision"]=scores_results["count"]["tp"]/(scores_results["count"]["tp"]*scores_results["count"]["fp"])
+scores_results["fscore"]=(2*scores_results["recall"]*scores_results["precision"])/(scores_results["recall"]+scores_results["precision"])
+scores_results["dist2opt"]=sqrt((1-scores_results["precision"])^2+ (1-scores_results["precision"])^2)
+return (scores_results)
+}
+score_perso(dag_reference,dag_mmhc,nb_variables)
+score_perso <- function(dag_reference,dag_mmhc,nb_variables) {
+scores_results=list("count"=list("tp"=0,"fp"=0,"tn"=0,"fn"=0),"recall"=0,"precision"=0,"fscore"=0,"dist2opt"=0)
+resultats_comparaison=compare(dag_reference,dag_mmhc)
+print(resultats_comparaison)
+scores_results$count$tp=resultats_comparaison$tp
+scores_results$count$fp=resultats_comparaison$fp
+scores_results$count$fn=resultats_comparaison$fn
+print(scores_results)
+print(scores_results$count$fp)
+scores_results["count"]["tn"]=(nb_variables*(nb_variables-1))-(resultats_comparaison$tp+resultats_comparaison$fp+resultats_comparaison$fn)
+scores_results["recall"]=scores_results["count"]["tp"]/(scores_results["count"]["tp"]*scores_results["count"]["fn"])
+scores_results["precision"]=scores_results["count"]["tp"]/(scores_results["count"]["tp"]*scores_results["count"]["fp"])
+scores_results["fscore"]=(2*scores_results["recall"]*scores_results["precision"])/(scores_results["recall"]+scores_results["precision"])
+scores_results["dist2opt"]=sqrt((1-scores_results["precision"])^2+ (1-scores_results["precision"])^2)
+return (scores_results)
+}
+score_perso(dag_reference,dag_mmhc,nb_variables)
+score_perso <- function(dag_reference,dag_mmhc,nb_variables) {
+scores_results=list("count"=list("tp"=0,"fp"=0,"tn"=0,"fn"=0),"recall"=0,"precision"=0,"fscore"=0,"dist2opt"=0)
+resultats_comparaison=compare(dag_reference,dag_mmhc)
+print(resultats_comparaison)
+scores_results$count$tp=resultats_comparaison$tp
+scores_results$count$fp=resultats_comparaison$fp
+scores_results$count$fn=resultats_comparaison$fn
+scores_results$count$tn=(nb_variables*(nb_variables-1))-(resultats_comparaison$tp+resultats_comparaison$fp+resultats_comparaison$fn)
+scores_results$recall=scores_results$count$tp/(scores_results$count$tp*scores_results$count$fn)
+scores_results$precision=scores_results$count$tp/(scores_results$count$tp*scores_results$count$fp)
+scores_results$fscore=(2*scores_results$recall*scores_results$precision)/(scores_results$recall+scores_results$precision)
+scores_results$dist2opt=sqrt((1-scores_results$precision)^2+ (1-scores_results$precision)^2)
+return (scores_results)
+}
+score_perso(dag_reference,dag_mmhc,nb_variables)
+score_perso <- function(dag_reference,dag_mmhc,nb_variables) {
+scores_results=list("count"=list("tp"=0,"fp"=0,"tn"=0,"fn"=0),"recall"=0,"precision"=0,"fscore"=0,"dist2opt"=0)
+resultats_comparaison=compare(dag_reference,dag_mmhc)
+scores_results$count$tp=resultats_comparaison$tp
+scores_results$count$fp=resultats_comparaison$fp
+scores_results$count$fn=resultats_comparaison$fn
+scores_results$count$tn=(nb_variables*(nb_variables-1))-(resultats_comparaison$tp+resultats_comparaison$fp+resultats_comparaison$fn)
+scores_results$recall=scores_results$count$tp/(scores_results$count$tp*scores_results$count$fn)
+scores_results$precision=scores_results$count$tp/(scores_results$count$tp*scores_results$count$fp)
+scores_results$fscore=(2*scores_results$recall*scores_results$precision)/(scores_results$recall+scores_results$precision)
+scores_results$dist2opt=sqrt((1-scores_results$precision)^2+ (1-scores_results$precision)^2)
+return (scores_results)
+}
+score_perso(dag_reference,dag_mmhc,nb_variables)
+score_perso <- function(dag_reference,dag_mmhc,nb_variables) {
+scores_results=list("count"=list("tp"=0,"fp"=0,"tn"=0,"fn"=0),"recall"=0,"precision"=0,"fscore"=0,"dist2opt"=0)
+resultats_comparaison=compare(dag_reference,dag_mmhc)
+scores_results$count$tp=resultats_comparaison$tp
+scores_results$count$fp=resultats_comparaison$fp
+scores_results$count$fn=resultats_comparaison$fn
+scores_results$count$tn=(nb_variables*(nb_variables-1))-(resultats_comparaison$tp+resultats_comparaison$fp+resultats_comparaison$fn)
+scores_results$recall=scores_results$count$tp/(scores_results$count$tp+scores_results$count$fn)
+scores_results$precision=scores_results$count$tp/(scores_results$count$tp+scores_results$count$fp)
+scores_results$fscore=(2*scores_results$recall*scores_results$precision)/(scores_results$recall+scores_results$precision)
+scores_results$dist2opt=sqrt((1-scores_results$precision)^2+ (1-scores_results$precision)^2)
+return (scores_results)
+}
+score_perso(dag_reference,dag_mmhc,nb_variables)
+setwd("C:\Users\bchassagno\Documents\R\win-library\3.5\bnlearn\R")
+setwd(r"C:\Users\bchassagno\Documents\R\win-library\3.5\bnlearn\R")
+setwd("C://Users//bchassagno//Documents//R//win-library//3.5//bnlearn//R")
+getwd()
+setwd("C://Users//bchassagno//Documents//R//win-library//3.5//bnlearn//R")
+lazyLoad(filebase = "bnlearn.rdb", envir = parent.frame())
+getwd()
+?print
+readRDS("bnlearn.rdb")
+lazyLoad(filebase = "bnlearn.rdb")
+lazyLoad(filebase = "bnlearn.rdx")
+#mmhc
+nb_variables=dim(training_set_without_missingvalue)[2]
+dag_mmhc=mmhc(training_set_without_missingvalue)
+graphviz.compare(dag_reference,dag_mmhc)
+score_perso(dag_reference,dag_mmhc,nb_variables)
+library(bnlearn)
+install.packages('bnlearn')
+install.packages("bnlearn")
+library(bnlearn)
+par(mfrow = c(1, 1))
+score_perso <- function(dag_reference,dag_mmhc,nb_variables) {
+scores_results=list("count"=list("tp"=0,"fp"=0,"tn"=0,"fn"=0),"recall"=0,"precision"=0,"fscore"=0,"dist2opt"=0)
+resultats_comparaison=compare(dag_reference,dag_mmhc)
+scores_results$count$tp=resultats_comparaison$tp
+scores_results$count$fp=resultats_comparaison$fp
+scores_results$count$fn=resultats_comparaison$fn
+scores_results$count$tn=(nb_variables*(nb_variables-1))-(resultats_comparaison$tp+resultats_comparaison$fp+resultats_comparaison$fn)
+scores_results$recall=scores_results$count$tp/(scores_results$count$tp+scores_results$count$fn)
+scores_results$precision=scores_results$count$tp/(scores_results$count$tp+scores_results$count$fp)
+scores_results$fscore=(2*scores_results$recall*scores_results$precision)/(scores_results$recall+scores_results$precision)
+scores_results$dist2opt=sqrt((1-scores_results$precision)^2+ (1-scores_results$precision)^2)
+return (scores_results)
+}
+#main use: compare recall and precision of two algorithms
+# load the data.
+data(alarm)
+# create and plot the true network structure.
+modelstring = paste0("[HIST|LVF][CVP|LVV][PCWP|LVV][HYP][LVV|HYP:LVF][LVF]",
+"[STKV|HYP:LVF][ERLO][HRBP|ERLO:HR][HREK|ERCA:HR][ERCA][HRSA|ERCA:HR][ANES]",
+"[APL][TPR|APL][ECO2|ACO2:VLNG][KINK][MINV|INT:VLNG][FIO2][PVS|FIO2:VALV]",
+"[SAO2|PVS:SHNT][PAP|PMB][PMB][SHNT|INT:PMB][INT][PRSS|INT:KINK:VTUB][DISC]",
+"[MVS][VMCH|MVS][VTUB|DISC:VMCH][VLNG|INT:KINK:VTUB][VALV|INT:VLNG]",
+"[ACO2|VALV][CCHL|ACO2:ANES:SAO2:TPR][HR|CCHL][CO|HR:STKV][BP|CO:TPR]")
+dag_reference = model2network(modelstring)
+graphviz.plot(dag_reference)
+#on determine les probabilites du dag en fonction du jeu de donnees
+donnnes_ajustees=bn.fit(dag_reference,alarm,method="bayes")
+#from the true structure, create a dataset of 100 000 lines, and save it
+training_set=rbn(dag_reference,100000,alarm)
+#potentially, impute the missing rows
+training_set_without_missingvalue = impute(object=donnnes_ajustees, data=training_set)
+#compare performances of several learning algorithms with the true real structure
+#le premier element de la fonction compare correspond au graphe standard, attendu
+#mmhc
+nb_variables=dim(training_set_without_missingvalue)[2]
+dag_mmhc=mmhc(training_set_without_missingvalue)
+graphviz.compare(dag_reference,dag_mmhc)
+score_perso(dag_reference,dag_mmhc,nb_variables)
+#rsamx2
+dag_rsmax2=rsmax2(training_set_without_missingvalue)
+graphviz.plot(dag_rsmax2)
+score_perso(dag_reference,dag_rsmax2,nb_variables)
+par(mfrow = c(1, 2))
+graphviz.compare(dag_reference,dag_rsmax2)
+#inter-iamb
+dag_inter_iamb=inter.iamb(training_set_without_missingvalue)
+graphviz.plot(dag_inter_iamb)
+score_perso(dag_reference,dag_inter_iamb,nb_variables)
+par(mfrow = c(1, 2))
+graphviz.compare(dag_reference,dag_inter_iamb)
+#mmpc
+dag_mmpc=inter.iamb(training_set_without_missingvalue)
+graphviz.plot(dag_mmpc)
+score_perso(dag_reference,dag_mmpc,nb_variables)
+par(mfrow = c(1, 2))
+graphviz.compare(dag_reference,dag_mmpc)
+par(mfrow = c(1, 3))
+graphviz.compare(dag_reference,current=c(dag_mmpc,dag_inter_iamb))
+nb_variables=dim(training_set_without_missingvalue)[2]
+dag_mmhc=mmhc(training_set_without_missingvalue)
+graphviz.compare(dag_reference,dag_mmhc)
+score_perso(dag_reference,dag_mmhc,nb_variables)
+par(mfrow = c(1, 2))
+graphviz.compare(dag_reference,dag_mmhc)
+score_perso(dag_reference,dag_mmhc,nb_variables)
+graphviz.compare(dag_reference,dag_rsmax2)
+graphviz.compare(dag_reference,dag_inter_iamb)
+graphviz.compare(dag_reference,current=dag_mmpc)
+require(devtools)
+install_github("bchassagnol/bnlearn-clone-3.4")
+require(bnlearn)
+data(alarm)
+# create and plot the network structure.
+dag_alarm = model2network(paste0("[HIST|LVF][CVP|LVV][PCWP|LVV][HYP][LVV|HYP:LVF][LVF]",
+"[STKV|HYP:LVF][ERLO][HRBP|ERLO:HR][HREK|ERCA:HR][ERCA][HRSA|ERCA:HR][ANES]",
+"[APL][TPR|APL][ECO2|ACO2:VLNG][KINK][MINV|INT:VLNG][FIO2][PVS|FIO2:VALV]",
+"[SAO2|PVS:SHNT][PAP|PMB][PMB][SHNT|INT:PMB][INT][PRSS|INT:KINK:VTUB][DISC]",
+"[MVS][VMCH|MVS][VTUB|DISC:VMCH][VLNG|INT:KINK:VTUB][VALV|INT:VLNG]",
+"[ACO2|VALV][CCHL|ACO2:ANES:SAO2:TPR][HR|CCHL][CO|HR:STKV][BP|CO:TPR]"))
+graphviz.plot(dag_alarm)
+training_set_alarm=na.omit(rbn(dag_alarm,20000,alarm))
+hpc(training_set_alarm)
+hybrid.pc("VENTALV",training_set_asia,nodes=names(training_set_asia),pc.method="fdr.iamb")
+hpc(training_set_alarm,pc.method="fdr.iamb")
+dag=hpc(training_set_alarm,pc.method="fdr.iamb")
+graphviz.plot(dag)
+dag=hpc(training_set_alarm,pc.method="fdr.iamb")
+graphviz.plot(dag)
+dag=hpc(training_set_alarm,pc.method="fdr.iamb")
+graphviz.plot(dag)
+hpc
+bnlearn
+hybrid.pc.global()
+library(bnlearn)
+hybrid.pc
+getAnywhere(bnlearn)
+getAnywhere(hybrid.pc.global)
+getAnywhere(hybrid.pc)
+hybrid.pc
+hybrid.pc()
+require(devtools)
+install_github("bchassagnol/bnlearn-clone-3.4")
+require(bnlearn)
+data(alarm)
+# create and plot the network structure.
+dag_alarm = model2network(paste0("[HIST|LVF][CVP|LVV][PCWP|LVV][HYP][LVV|HYP:LVF][LVF]",
+"[STKV|HYP:LVF][ERLO][HRBP|ERLO:HR][HREK|ERCA:HR][ERCA][HRSA|ERCA:HR][ANES]",
+"[APL][TPR|APL][ECO2|ACO2:VLNG][KINK][MINV|INT:VLNG][FIO2][PVS|FIO2:VALV]",
+"[SAO2|PVS:SHNT][PAP|PMB][PMB][SHNT|INT:PMB][INT][PRSS|INT:KINK:VTUB][DISC]",
+"[MVS][VMCH|MVS][VTUB|DISC:VMCH][VLNG|INT:KINK:VTUB][VALV|INT:VLNG]",
+"[ACO2|VALV][CCHL|ACO2:ANES:SAO2:TPR][HR|CCHL][CO|HR:STKV][BP|CO:TPR]"))
+graphviz.plot(dag_alarm)
+training_set_alarm=na.omit(rbn(dag_alarm,20000,alarm))
+dag=hpc(training_set_alarm,pc.method="fdr.iamb",debug=TRUE)
+graphviz.plot(dag)
+hybrid.pc("VENTALV",training_set_asia,nodes=names(training_set_asia),pc.method="fdr.iamb")
